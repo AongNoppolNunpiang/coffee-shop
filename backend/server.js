@@ -18,11 +18,12 @@ app.use(cors(corsOptions));  // ใช้ CORS ที่กำหนด
 
 // ตั้งค่าการเชื่อมต่อกับ MySQL
 const db = mysql.createConnection({
-    host: process.env.DB_HOST || 'db',
+    host: 'mysql_db',  // เปลี่ยนเป็นชื่อ container ของ MySQL
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASS || 'password',
     database: process.env.DB_NAME || 'coffee_shop'
 });
+
 
 // เชื่อมต่อกับฐานข้อมูล MySQL
 db.connect((err) => {
@@ -84,6 +85,11 @@ app.post('/login', (req, res) => {
         res.status(200).json({ message: 'Login successful', user: { id: user.id, email: user.email } });
     });
 });
+// เพิ่มในไฟล์ server.js
+app.get('/', (req, res) => {
+    res.send('Welcome to the Coffee Shop API!');
+});
+
 
 // สร้างเซิร์ฟเวอร์
 app.listen(port, () => {
