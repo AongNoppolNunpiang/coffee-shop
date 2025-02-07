@@ -1,17 +1,20 @@
-# ใช้ Node.js base image
-FROM node:16
+# Dockerfile ของ backend
+FROM node:14
 
-# ตั้งค่า working directory
+# ตั้งค่าการทำงานภายใน container
 WORKDIR /app
 
-# คัดลอก package.json และ package-lock.json
-COPY package*.json ./
+# คัดลอกไฟล์ทั้งหมดจากเครื่องที่ใช้งานเข้า container
+COPY . .
+
+# ติดตั้ง netcat สำหรับการตรวจสอบการเชื่อมต่อ
+RUN apt-get update && apt-get install -y netcat
 
 # ติดตั้ง dependencies
 RUN npm install
 
-# คัดลอกไฟล์ที่เหลือทั้งหมด
-COPY . .
+# เปิด port ที่ backend จะทำงาน
+EXPOSE 5000
 
-# สั่งให้รันเซิร์ฟเวอร์
-CMD ["node", "server.js"]
+# เริ่มทำงานของ backend
+CMD ["npm", "start"]
