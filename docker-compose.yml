@@ -26,12 +26,14 @@ services:
       - DB_NAME=coffee_shop
     networks:
       - coffee-network
+    # อาจจะต้องการเพิ่มการรีไทร์ หรือการเช็คการเชื่อมต่อก่อนเริ่มทำงาน
+    command: ["sh", "-c", "until nc -z -v -w30 db 3306; do echo 'Waiting for MySQL...'; sleep 1; done; node server.js"]
 
   frontend:
     build: ./frontend
     container_name: frontend
     ports:
-      - '80:80'
+      - '3000:3000'
     networks:
       - coffee-network
 
