@@ -11,7 +11,7 @@ function Login() {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:5000/login', { email, password });
+            const response = await axios.post('http://backend:5000/login', { email, password });
             setMessage(response.data.message);  // แสดงข้อความจาก server เช่น 'Login successful'
         } catch (error) {
             setMessage(error.response?.data?.error || 'Something went wrong');

@@ -11,7 +11,7 @@ function Register() {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:5000/register', { email, password });
+            const response = await axios.post('http://backend:5000/login', { email, password });
             setMessage(response.data.message);
         } catch (error) {
             setMessage(error.response?.data?.error || 'Something went wrong');
