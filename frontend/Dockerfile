@@ -1,24 +1,22 @@
-# ใช้ Node.js base image
-FROM node:16 AS build
+# Use Node.js as the base image
+FROM node:18 AS builder
 
-# ตั้งค่า working directory
+# Set working directory
 WORKDIR /app
 
-# คัดลอก package.json และ package-lock.json
+# Copy package.json and install dependencies
 COPY package*.json ./
 
-# ติดตั้ง dependencies
 RUN npm install
 
-# คัดลอกไฟล์ทั้งหมด
+# Copy the rest of the app
 COPY . .
 
-# สร้าง production build
+# Build Next.js
 RUN npm run build
 
-# ใช้ Nginx เพื่อเสิร์ฟ build
-FROM nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
-
+# Expose port
 EXPOSE 3000
-CMD ["nginx", "-g", "daemon off;"]
+
+# Start app
+CMD ["npm", "start"]
