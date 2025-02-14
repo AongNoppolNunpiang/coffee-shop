@@ -2,7 +2,7 @@
 # eiei
 !!เปิด docker ไว้ด้วย!!
 !!ต้องอยู่โฟล์เดอร์หน้าสุด!!
-docker-compose build
+docker-compose up --build
 
 # ถ้าทำแค่ front หลัง build เสร็จ 
 cd frontend

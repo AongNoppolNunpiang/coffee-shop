@@ -33,9 +33,12 @@ services:
     build: ./frontend
     container_name: frontend
     ports:
-      - '3000:3000'
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src # Mount src เพื่ออัปเดตแบบ Real-time
     networks:
       - coffee-network
+
 
 networks:
   coffee-network:
