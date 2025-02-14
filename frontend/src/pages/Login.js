@@ -1,6 +1,9 @@
 // src/pages/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import './Login.css'; // นำเข้าไฟล์ CSS
+import coffeeBg from '../assets/coffeeBg.png';
+import logo from '../assets/logo.png'; // นำเข้ารูปโลโก้
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -19,20 +22,33 @@ function Login() {
     };
 
     return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email:</label>
+        <div className="login-container">
+            <div className="login-left" style={{ backgroundImage: `url(${coffeeBg})` }}>
+                <img src={logo} alt="Logo" className="logo" />
+                <h1 className="brand-name">Dop dop Coffee</h1>
+                <p className="slogan">dopdop yesyes</p>
+            </div>
+            <div className="login-right">
+                <h2>Welcome!</h2>
+                <p>Please enter your information</p>
+                <form onSubmit={handleSubmit}>
+                    <label>Username</label>
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                </div>
-                <div>
-                    <label>Password:</label>
+
+                    <label>Password</label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                </div>
-                <button type="submit">Login</button>
-            </form>
-            {message && <p>{message}</p>}
+
+                    <button type="submit" className="login-button">Sign in</button>
+
+                    <div className="login-options">
+                        <input type="checkbox" id="remember" />
+                        <label htmlFor="remember">Remember me</label>
+                        <a href="/forgot-password" className="forgot-password">Forgot password?</a>
+                    </div>
+                    <p>Don’t have an account? <a href="/register">Sign up now</a></p>
+                </form>
+                {message && <p className="message">{message}</p>}
+            </div>
         </div>
     );
 }
