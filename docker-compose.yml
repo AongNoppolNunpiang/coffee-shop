@@ -20,7 +20,7 @@ services:
     depends_on:
       - db
     environment:
-      - DB_HOST=db
+      - DB_HOST=mysql_db
       - DB_USER=root
       - DB_PASS=password
       - DB_NAME=coffee_shop
