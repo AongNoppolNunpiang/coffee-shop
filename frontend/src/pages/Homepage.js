@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./Homepage.css"; // Keep this for custom styles
+import espressoImage from "../assets/espresso.png"; // นำเข้า image
+import cappuccinoImage from "../assets/cappuccino.png"; // นำเข้า image
+import latteImage from "../assets/latte.png"; // นำเข้า image
 
 const allProducts = [
   { id: 1, name: "Light Roast", emoji: "☕", category: "Coffee", price: 50 },
   { id: 2, name: "Medium Roast", emoji: "☕", category: "Coffee", price: 55 },
   { id: 3, name: "Dark Roast", emoji: "☕", category: "Coffee", price: 60 },
-  { id: 4, name: "Espresso", emoji: "☕", category: "Coffee", price: 70 },
-  { id: 5, name: "Cappuccino", emoji: "☕", category: "Coffee", price: 75 },
-  { id: 6, name: "Latte", emoji: "☕", category: "Coffee", price: 80 },
+  { id: 4, name: "Espresso", emoji: <img src={espressoImage} alt="Espresso" />, category: "Coffee", price: 70 },
+  { id: 5, name: "Cappuccino", emoji: <img src={cappuccinoImage} alt="Cappuccino" />, category: "Coffee", price: 75 },
+  { id: 6, name: "Latte", emoji: <img src={latteImage} alt="Latte" />, category: "Coffee", price: 80 },
   { id: 7, name: "Orange Juice", emoji: "🍊", category: "Juice", price: 40 },
   { id: 8, name: "Apple Juice", emoji: "🍎", category: "Juice", price: 45 },
   { id: 9, name: "Lemonade", emoji: "🍋", category: "Juice", price: 50 },
@@ -133,9 +136,8 @@ const HomePage = () => {
             (category) => (
               <button
                 key={category}
-                className={`category-btn ${
-                  selectedCategory === category ? "active" : ""
-                }`}
+                className={`category-btn ${selectedCategory === category ? "active" : ""
+                  }`}
                 onClick={() => handleCategoryClick(category)}
               >
                 {category}
