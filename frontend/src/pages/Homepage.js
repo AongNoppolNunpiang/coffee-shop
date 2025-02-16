@@ -1,17 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import {
+  saveOrderToLocalStorage,
+  getOrderFromLocalStorage,
+} from "../utils/localStorage";
+
 import "./Homepage.css"; // Keep this for custom styles
-import espressoImage from "../assets/espresso.png"; // นำเข้า image
-import cappuccinoImage from "../assets/cappuccino.png"; // นำเข้า image
-import latteImage from "../assets/latte.png"; // นำเข้า image
+// import espressoImage from "../assets/espresso.png"; // นำเข้า image
+// import cappuccinoImage from "../assets/cappuccino.png"; // นำเข้า image
+// import latteImage from "../assets/latte.png"; // นำเข้า image
 
 const allProducts = [
   { id: 1, name: "Light Roast", emoji: "☕", category: "Coffee", price: 50 },
   { id: 2, name: "Medium Roast", emoji: "☕", category: "Coffee", price: 55 },
   { id: 3, name: "Dark Roast", emoji: "☕", category: "Coffee", price: 60 },
-  { id: 4, name: "Espresso", emoji: <img src={espressoImage} alt="Espresso" />, category: "Coffee", price: 70 },
-  { id: 5, name: "Cappuccino", emoji: <img src={cappuccinoImage} alt="Cappuccino" />, category: "Coffee", price: 75 },
-  { id: 6, name: "Latte", emoji: <img src={latteImage} alt="Latte" />, category: "Coffee", price: 80 },
+  {
+    id: 4,
+    name: "Espresso",
+    emoji: "☕",
+    category: "Coffee",
+    price: 70,
+  },
+  {
+    id: 5,
+    name: "Cappuccino",
+    emoji: "☕",
+    category: "Coffee",
+    price: 75,
+  },
+  {
+    id: 6,
+    name: "Latte",
+    emoji: "☕",
+    category: "Coffee",
+    price: 80,
+  },
   { id: 7, name: "Orange Juice", emoji: "🍊", category: "Juice", price: 40 },
   { id: 8, name: "Apple Juice", emoji: "🍎", category: "Juice", price: 45 },
   { id: 9, name: "Lemonade", emoji: "🍋", category: "Juice", price: 50 },
@@ -51,15 +75,24 @@ const HomePage = () => {
   const [order, setOrder] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0); // State for total price
 
+  useEffect(() => {
+    const savedData = getOrderFromLocalStorage();
+    setOrder(savedData.order);
+    setTotalPrice(savedData.totalPrice);
+  }, []);
+
+  // Save order to localStorage when it changes
+  useEffect(() => {
+    saveOrderToLocalStorage(order, totalPrice);
+  }, [order, totalPrice]);
+
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
-    if (category === "All") {
-      setProducts(allProducts);
-    } else {
-      setProducts(
-        allProducts.filter((product) => product.category === category)
-      );
-    }
+    setProducts(
+      category === "All"
+        ? allProducts
+        : allProducts.filter((product) => product.category === category)
+    );
   };
 
   const handleLogout = () => {
@@ -68,45 +101,50 @@ const HomePage = () => {
   };
 
   const handleAddToOrder = (product) => {
-    // Increase quantity
     setOrder((prevOrder) => {
       const existingItem = prevOrder.find((item) => item.id === product.id);
-
-      if (existingItem) {
-        return prevOrder.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      } else {
-        return [...prevOrder, { ...product, quantity: 1 }];
-      }
+      return existingItem
+        ? prevOrder.map((item) =>
+            item.id === product.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        : [...prevOrder, { ...product, quantity: 1 }];
     });
-
-    setTotalPrice((prevTotal) => prevTotal + product.price); // Increase price correctly
+    setTotalPrice((prevTotal) => prevTotal + product.price);
   };
 
   const handleRemoveFromOrder = (productId) => {
     // Reduce quantity
     setOrder((prevOrder) => {
       const existingItem = prevOrder.find((item) => item.id === productId);
+      if (!existingItem) return prevOrder;
 
-      if (!existingItem) return prevOrder; // Prevent errors
+      const newOrder =
+        existingItem.quantity > 1
+          ? prevOrder.map((item) =>
+              item.id === productId
+                ? { ...item, quantity: item.quantity - 1 }
+                : item
+            )
+          : prevOrder.filter((item) => item.id !== productId);
 
-      if (existingItem.quantity > 1) {
-        return prevOrder.map((item) =>
-          item.id === productId
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
-        );
-      } else {
-        return prevOrder.filter((item) => item.id !== productId);
-      }
+      setTotalPrice((prevTotal) => Math.max(0, prevTotal - existingItem.price));
+      return newOrder;
     });
+  };
 
-    setTotalPrice((prevTotal) =>
-      Math.max(0, prevTotal - order.find((p) => p.id === productId)?.price || 0)
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setProducts(
+      allProducts.filter((product) =>
+        product.name.toLowerCase().includes(query)
+      )
     );
+  };
+
+  const handleViewCart = () => {
+    navigate("/cart", { state: { order, totalPrice } });
   };
 
   return (
@@ -115,7 +153,9 @@ const HomePage = () => {
       <div className="sidebar">
         <div className="logo">☕</div>
         <button className="menu-btn">Menu</button>
-        <button className="cart-btn">Cart</button>
+        <button className="cart-btn" onClick={handleViewCart}>
+          Cart ({order.reduce((total, item) => total + item.quantity, 0)})
+        </button>
         <button className="logout-btn" onClick={handleLogout}>
           Log out
         </button>{" "}
@@ -126,7 +166,12 @@ const HomePage = () => {
       <div className="main-content">
         {/* Search Bar */}
         <div className="search-bar">
-          <input type="text" placeholder="Search" className="search-input" />
+          <input
+            type="text"
+            placeholder="Search"
+            className="search-input"
+            onChange={handleSearch}
+          />
           <div className="username">User007</div>
         </div>
 
@@ -136,8 +181,9 @@ const HomePage = () => {
             (category) => (
               <button
                 key={category}
-                className={`category-btn ${selectedCategory === category ? "active" : ""
-                  }`}
+                className={`category-btn ${
+                  selectedCategory === category ? "active" : ""
+                }`}
                 onClick={() => handleCategoryClick(category)}
               >
                 {category}
@@ -181,8 +227,11 @@ const HomePage = () => {
           )}
         </div>
         {/* Total Price Display */}
-        <h3 className="total-price">Total: ฿{totalPrice}</h3>
-        <button className="purchase-btn">Purchase</button>
+        <h3 className="total-price">
+          Total: ฿{totalPrice} (
+          {order.reduce((total, item) => total + item.quantity, 0)} items)
+        </h3>
+        <button className="purchase-btn">Add to Cart</button>
       </div>
     </div>
   );

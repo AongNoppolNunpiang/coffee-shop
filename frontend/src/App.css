@@ -36,3 +36,48 @@
     transform: rotate(360deg);
   }
 }
+
+/* Navigation Bar */
+nav {
+  background-color: transparent; /* Remove background for a clean look */
+  padding: 10px 0; /* Less padding for a more compact design */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: none; /* Remove shadow for a flatter look */
+}
+
+/* Navigation List */
+nav ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Navigation List Items */
+nav ul li {
+  margin: 0 20px; /* Increased space between items */
+}
+
+/* Links */
+nav a {
+  color: #333; /* Dark color for text */
+  text-decoration: none; /* Remove underline */
+  font-size: 18px;
+  font-weight: 600; /* Medium weight for text */
+  padding: 8px 12px; /* Slightly less padding for compactness */
+  transition: color 0.3s ease; /* Smooth transition for hover effects */
+}
+
+/* Hover Effect */
+nav a:hover {
+  color: #ff6600; /* Orange color for hover state */
+}
+
+/* Active Link */
+nav a.active {
+  color: #e65c00; /* Darker orange for active link */
+  font-weight: 700; /* Bold active link */
+}
+

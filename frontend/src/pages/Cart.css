@@ -1,0 +1,152 @@
+/* General Styles */
+.home-page {
+    display: flex;
+    height: 100vh;
+    background-color: #f4f4f4;
+    flex-direction: row;
+    font-family: 'Helvetica', sans-serif;
+  }
+  
+  .sidebar {
+    width: 240px;
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    box-shadow: 2px 0px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 40px;
+  }
+  
+  .sidebar button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #6a4e23;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .sidebar button:hover {
+    background-color: #5d4020;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .cart-list {
+    margin-bottom: 20px;
+  }
+  
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .cart-item-name {
+    width: 40%;
+  }
+  
+  .cart-item-price,
+  .cart-item-quantity,
+  .cart-item-subtotal {
+    width: 20%;
+    text-align: center;
+  }
+  
+  .cart-total {
+    margin-top: 30px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .cart-total-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .cart-total-item span {
+    font-weight: bold;
+  }
+  
+  .process-checkout-btn {
+    padding: 12px 18px;
+    background-color: #6a4e23;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: bold;
+    width: 100%;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s;
+  }
+  
+  .process-checkout-btn:hover {
+    background-color: #5d4020;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .home-page {
+      flex-direction: column;
+    }
+  
+    .sidebar {
+      width: 100%;
+      padding: 15px;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  
+    .main-content {
+      padding: 10px;
+    }
+  
+    .cart-item {
+      flex-direction: column;
+      padding: 15px 0;
+    }
+  
+    .cart-total {
+      margin-top: 20px;
+    }
+  
+    .process-checkout-btn {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .cart-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .cart-item-name,
+    .cart-item-price,
+    .cart-item-quantity,
+    .cart-item-subtotal {
+      width: 100%;
+      text-align: left;
+    }
+  }
+  
