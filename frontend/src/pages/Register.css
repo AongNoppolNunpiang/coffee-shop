@@ -1,97 +1,98 @@
+/* src/pages/Register.css */
 .register-container {
-    display: flex;
-    height: 100vh;
+  display: flex;
+  height: 100vh;
 }
 
 .register-left {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    background-color: #fff;
-    /* ทำให้ตัดกับพื้นหลังขวา */
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: #fff;
+  /* ทำให้ตัดกับพื้นหลังขวา */
 }
 
 .register-right {
-    width: 50%;
-    background-image: url('../assets/coffee-table.png');
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+  width: 50%;
+  background-image: url("../assets/coffee-table.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 .logo-text {
-    width: 60%;
-    /* ลดขนาดโลโก้ */
-    position: absolute;
-    bottom: 10%;
-    right: 10%;
+  width: 60%;
+  /* ลดขนาดโลโก้ */
+  position: absolute;
+  bottom: 10%;
+  right: 10%;
 }
 
 .register-left h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
+  font-size: 2rem;
+  margin-bottom: 10px;
 }
 
 .register-left p {
-    font-size: 1rem;
-    margin-bottom: 20px;
+  font-size: 1rem;
+  margin-bottom: 20px;
 }
 
 .register-left form {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
 }
 
 .register-left label {
-    font-size: 1rem;
-    margin-bottom: 5px;
+  font-size: 1rem;
+  margin-bottom: 5px;
 }
 
 .register-left input {
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
 }
 
 .terms {
-    display: flex;
-    align-items: center;
-    font-size: 0.9rem;
-    margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
 }
 
 .terms input {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .register-button {
-    background-color: #8F7358;
-    color: white;
-    padding: 10px;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: #8f7358;
+  color: white;
+  padding: 10px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .register-button:hover {
-    background-color: #7a624d;
+  background-color: #7a624d;
 }
 
 a {
-    color: #8F7358;
-    text-decoration: none;
+  color: #8f7358;
+  text-decoration: none;
 }
 
 a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
