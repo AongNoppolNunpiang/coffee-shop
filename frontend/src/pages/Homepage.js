@@ -3,28 +3,41 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./Homepage.css"; // Keep this for custom styles
 
 const allProducts = [
-  { id: 1, name: "Light Roast", emoji: "☕", category: "Coffee" },
-  { id: 2, name: "Medium Roast", emoji: "☕", category: "Coffee" },
-  { id: 3, name: "Dark Roast", emoji: "☕", category: "Coffee" },
-  { id: 4, name: "Espresso", emoji: "☕", category: "Coffee" },
-  { id: 5, name: "Cappuccino", emoji: "☕", category: "Coffee" },
-  { id: 6, name: "Latte", emoji: "☕", category: "Coffee" },
-  { id: 7, name: "Orange Juice", emoji: "🍊", category: "Juice" },
-  { id: 8, name: "Apple Juice", emoji: "🍎", category: "Juice" },
-  { id: 9, name: "Lemonade", emoji: "🍋", category: "Juice" },
-  { id: 10, name: "Green Tea", emoji: "🍵", category: "Tea" },
-  { id: 11, name: "Black Tea", emoji: "🍵", category: "Tea" },
-  { id: 12, name: "Cake Slice", emoji: "🍰", category: "Cake" },
-  { id: 13, name: "Cheese Cake", emoji: "🍰", category: "Cake" },
-  { id: 14, name: "R & B", emoji: "🌱", category: "Coffee Beans" },
-  { id: 15, name: "Ethiopian", emoji: "🌱", category: "Coffee Beans" },
-  { id: 16, name: "Brazilian", emoji: "🌱", category: "Coffee Beans" },
+  { id: 1, name: "Light Roast", emoji: "☕", category: "Coffee", price: 50 },
+  { id: 2, name: "Medium Roast", emoji: "☕", category: "Coffee", price: 55 },
+  { id: 3, name: "Dark Roast", emoji: "☕", category: "Coffee", price: 60 },
+  { id: 4, name: "Espresso", emoji: "☕", category: "Coffee", price: 70 },
+  { id: 5, name: "Cappuccino", emoji: "☕", category: "Coffee", price: 75 },
+  { id: 6, name: "Latte", emoji: "☕", category: "Coffee", price: 80 },
+  { id: 7, name: "Orange Juice", emoji: "🍊", category: "Juice", price: 40 },
+  { id: 8, name: "Apple Juice", emoji: "🍎", category: "Juice", price: 45 },
+  { id: 9, name: "Lemonade", emoji: "🍋", category: "Juice", price: 50 },
+  { id: 10, name: "Green Tea", emoji: "🍵", category: "Tea", price: 55 },
+  { id: 11, name: "Black Tea", emoji: "🍵", category: "Tea", price: 50 },
+  { id: 12, name: "Cake Slice", emoji: "🍰", category: "Cake", price: 90 },
+  { id: 13, name: "Cheese Cake", emoji: "🍰", category: "Cake", price: 100 },
+  { id: 14, name: "R & B", emoji: "🌱", category: "Coffee Beans", price: 120 },
+  {
+    id: 15,
+    name: "Ethiopian",
+    emoji: "🌱",
+    category: "Coffee Beans",
+    price: 130,
+  },
+  {
+    id: 16,
+    name: "Brazilian",
+    emoji: "🌱",
+    category: "Coffee Beans",
+    price: 110,
+  },
 ];
 
 const ProductCard = ({ product, onAddToOrder }) => (
   <div className="product-card" onClick={() => onAddToOrder(product)}>
     <div className="product-emoji">{product.emoji}</div>
     <div className="product-name">{product.name}</div>
+    <div className="product-price">฿{product.price}</div>
   </div>
 );
 
@@ -33,16 +46,16 @@ const HomePage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [products, setProducts] = useState(allProducts);
   const [order, setOrder] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0); // State for total price
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     if (category === "All") {
       setProducts(allProducts);
     } else {
-      const filteredProducts = allProducts.filter(
-        (product) => product.category === category
+      setProducts(
+        allProducts.filter((product) => product.category === category)
       );
-      setProducts(filteredProducts);
     }
   };
 
@@ -52,11 +65,45 @@ const HomePage = () => {
   };
 
   const handleAddToOrder = (product) => {
-    setOrder((prevOrder) => [...prevOrder, product]);
+    // Increase quantity
+    setOrder((prevOrder) => {
+      const existingItem = prevOrder.find((item) => item.id === product.id);
+
+      if (existingItem) {
+        return prevOrder.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        return [...prevOrder, { ...product, quantity: 1 }];
+      }
+    });
+
+    setTotalPrice((prevTotal) => prevTotal + product.price); // Increase price correctly
   };
 
   const handleRemoveFromOrder = (productId) => {
-    setOrder((prevOrder) => prevOrder.filter((item) => item.id !== productId));
+    // Reduce quantity
+    setOrder((prevOrder) => {
+      const existingItem = prevOrder.find((item) => item.id === productId);
+
+      if (!existingItem) return prevOrder; // Prevent errors
+
+      if (existingItem.quantity > 1) {
+        return prevOrder.map((item) =>
+          item.id === productId
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        );
+      } else {
+        return prevOrder.filter((item) => item.id !== productId);
+      }
+    });
+
+    setTotalPrice((prevTotal) =>
+      Math.max(0, prevTotal - order.find((p) => p.id === productId)?.price || 0)
+    );
   };
 
   return (
@@ -118,7 +165,9 @@ const HomePage = () => {
           ) : (
             order.map((product) => (
               <div key={product.id} className="order-item">
-                <div className="order-item-name">{product.name}</div>
+                <div className="order-item-name">
+                  {product.name} - ฿{product.price} x {product.quantity}
+                </div>
                 <button
                   className="remove-item-btn"
                   onClick={() => handleRemoveFromOrder(product.id)}
@@ -129,11 +178,8 @@ const HomePage = () => {
             ))
           )}
         </div>
-        <input
-          type="text"
-          className="order-input"
-          placeholder="Enter order..."
-        />
+        {/* Total Price Display */}
+        <h3 className="total-price">Total: ฿{totalPrice}</h3>
         <button className="purchase-btn">Purchase</button>
       </div>
     </div>

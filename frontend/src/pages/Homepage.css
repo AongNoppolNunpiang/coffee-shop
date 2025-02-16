@@ -181,3 +181,16 @@
   transform: scale(1.05);
   transition: transform 0.2s;
 }
+
+.product-price {
+  font-size: 1rem;
+  color: #8b5a2b;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.total-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
