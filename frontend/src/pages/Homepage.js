@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./Homepage.css"; // Keep this for custom styles
 
 const allProducts = [
@@ -28,6 +29,7 @@ const ProductCard = ({ product, onAddToOrder }) => (
 );
 
 const HomePage = () => {
+  const navigate = useNavigate(); // Initialize navigate
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [products, setProducts] = useState(allProducts);
   const [order, setOrder] = useState([]);
@@ -42,6 +44,11 @@ const HomePage = () => {
       );
       setProducts(filteredProducts);
     }
+  };
+
+  const handleLogout = () => {
+    // logout logic (clearing user session)
+    navigate("/login"); // Redirect to login page
   };
 
   const handleAddToOrder = (product) => {
@@ -59,7 +66,10 @@ const HomePage = () => {
         <div className="logo">☕</div>
         <button className="menu-btn">Menu</button>
         <button className="cart-btn">Cart</button>
-        <button className="logout-btn">Log out</button>
+        <button className="logout-btn" onClick={handleLogout}>
+          Log out
+        </button>{" "}
+        {/* add handleLogout*/}
       </div>
 
       {/* Main Content */}
